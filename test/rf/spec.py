@@ -17,7 +17,7 @@ from scipy import signal
 from scipy.signal import find_peaks
 
 
-def spec_est(x, fs, ref=2 ** 15, plot=False):
+def spec_est(x, fs, ref=2 ** 15, plot=False, obj=None):
 
     N = len(x)
 
@@ -31,6 +31,12 @@ def spec_est(x, fs, ref=2 ** 15, plot=False):
 
     # FFT frequency bins
     freqs = fftfreq(N, 1 / fs)
+
+    # ampl and freqs for real data
+    if not obj._complex_data:
+        length = len(ampl)//2
+        ampl = [a for a in ampl if ampl.index(a)>=length]
+        freqs = [f for f in freqs if freqs.index(f)>=length]
 
     if plot:
         # Plot signal, showing how endpoints wrap from one chunk to the next
