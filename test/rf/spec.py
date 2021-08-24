@@ -13,6 +13,7 @@ from numpy import (
     pi,
 )
 from numpy.fft import fft, fftfreq, fftshift
+import numpy as np
 from scipy import signal
 from scipy.signal import find_peaks
 
@@ -20,6 +21,16 @@ from scipy.signal import find_peaks
 def spec_est(x, fs, ref=2 ** 15, plot=False, obj=None):
 
     N = len(x)
+    # print("x:", x)
+    # print(np.iscomplexobj(x))
+    print(np.iscomplexobj(x.any()))
+
+    # if not np.iscomplexobj(x):
+    # if np.iscomplexobj(x.any()):
+    #     i = 0
+    #     for _ in x:
+    #         i += 1
+    #     print("length of x:", i)
 
     # Apply window
     window = signal.kaiser(N, beta=38)
@@ -32,11 +43,11 @@ def spec_est(x, fs, ref=2 ** 15, plot=False, obj=None):
     # FFT frequency bins
     freqs = fftfreq(N, 1 / fs)
 
-    # ampl and freqs for real data
-    if not obj._complex_data:
-        length = len(ampl)//2
-        ampl = [a for a in ampl if ampl.index(a)>=length]
-        freqs = [f for f in freqs if freqs.index(f)>=length]
+    # # ampl and freqs for real data
+    # if not obj._complex_data:
+    #     length = len(ampl) // 2
+    #     ampl = [a for a in ampl if ampl.index(a) >= length]
+    #     freqs = [f for f in freqs if freqs.index(f) >= length]
 
     if plot:
         # Plot signal, showing how endpoints wrap from one chunk to the next
@@ -61,7 +72,7 @@ def spec_est(x, fs, ref=2 ** 15, plot=False, obj=None):
 def find_peaks_cust(x, num_peaks=4):
 
     loc = argmax(x)
-    print(x[loc : loc + 10])
+    print(x[loc: loc + 10])
     for p in range(1, num_peaks):
         l_loc = loc - 1
         r_loc = loc + 1
