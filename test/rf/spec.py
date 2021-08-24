@@ -21,16 +21,6 @@ from scipy.signal import find_peaks
 def spec_est(x, fs, ref=2 ** 15, plot=False, obj=None):
 
     N = len(x)
-    # print("x:", x)
-    # print(np.iscomplexobj(x))
-    print(np.iscomplexobj(x.any()))
-
-    # if not np.iscomplexobj(x):
-    # if np.iscomplexobj(x.any()):
-    #     i = 0
-    #     for _ in x:
-    #         i += 1
-    #     print("length of x:", i)
 
     # Apply window
     window = signal.kaiser(N, beta=38)
@@ -43,11 +33,19 @@ def spec_est(x, fs, ref=2 ** 15, plot=False, obj=None):
     # FFT frequency bins
     freqs = fftfreq(N, 1 / fs)
 
-    # # ampl and freqs for real data
-    # if not obj._complex_data:
-    #     length = len(ampl) // 2
-    #     ampl = [a for a in ampl if ampl.index(a) >= length]
-    #     freqs = [f for f in freqs if freqs.index(f) >= length]
+    if not np.iscomplexobj(x):
+        indx = len(ampl) // 2
+
+        # ampl for real data
+        w = np.zeros(indx) # Fill w ng elements na puro zeroes; length of w: indx
+        w = np.append(w, ampl[0:indx]) # Dagdagan ang w na array ng data from ampl,
+                                       # from index 0 hanggang sa kalahati
+        ampl = w
+
+        # freqs for real data
+        y = np.zeros(indx)
+        y = np.append(y, freqs[0:indx])
+        freqs = y
 
     if plot:
         # Plot signal, showing how endpoints wrap from one chunk to the next
