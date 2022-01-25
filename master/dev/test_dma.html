@@ -6,7 +6,7 @@
     <link rel="icon" href="../_static/favicon.png" type="image/png">
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Generic Tests" href="test_generics.html" /><link rel="prev" title="Attribute Tests" href="test_attr.html" />
 
-    <meta name="generator" content="sphinx-4.3.2, furo 2022.01.02"/>
+    <meta name="generator" content="sphinx-4.4.0, furo 2022.01.02"/>
         <title>DMA Tests - Analog Devices Hardware Python Interfaces 0.0.12</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=df49af52631e7917044a9c21a57f7b83170a6dd0" />
@@ -210,7 +210,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../devices/adi.ltc2314_14.html">ltc2314_14</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../devices/adi.ltc2983.html">ltc2983</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../devices/adi.one_bit_adc_dac.html">one_bit_adc_dac</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../devices/adi.tdd.html">ad9081</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devices/adi.tdd.html">tdd</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../buffers/index.html">Buffers</a></li>
@@ -436,7 +436,7 @@ enable through tx_enabled_channels</p>
 </dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="test.dma_tests.dma_rx">
-<span class="sig-prename descclassname"><span class="pre">test.dma_tests.</span></span><span class="sig-name descname"><span class="pre">dma_rx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">classname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_rx2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#test.dma_tests.dma_rx" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">test.dma_tests.</span></span><span class="sig-name descname"><span class="pre">dma_rx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">classname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_rx2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffer_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32768</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotated</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#test.dma_tests.dma_rx" title="Permalink to this definition"></a></dt>
 <dd><p>dma_rx: Construct RX buffers and verify data is non-zero when pulled.
 Collected buffer is of size 2**15 and 10 buffers are checked</p>
 <dl class="simple">
@@ -447,6 +447,12 @@ Collected buffer is of size 2**15 and 10 buffers are checked</p>
 </dd>
 <dt>channel: type=list</dt><dd><p>List of integers or list of list of integers of channels to
 enable through rx_enabled_channels</p>
+</dd>
+<dt>use_rx2: type=bool</dt><dd><p>If True, use rx2() instead of rx()</p>
+</dd>
+<dt>buffer_size: type=int</dt><dd><p>Size of RX buffer in samples. Defaults to 2**15</p>
+</dd>
+<dt>annotated: type=bool</dt><dd><p>If True, annotated output is provided (dict)</p>
 </dd>
 </dl>
 </dd>
