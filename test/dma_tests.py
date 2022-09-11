@@ -328,6 +328,103 @@ def dds_loopback(
     assert tone_peaks[indx] > peak_min
 
 
+def dds_adc_dac(
+    uri_tx,
+    uri_rx,
+    param_set_tx,
+    channel_tx,
+    channel_rx,
+    frequency,
+    scale,
+    peak_min,
+    classname_tx=None,
+    classname_rx=None,
+    dev_tx="iio",
+    dev_rx="iio",
+):
+    """
+    <insert definition and parameters used>
+    """
+    from test import signal_context as sc
+    tx = sc.get_signal_context(uri_tx, classname_tx=None, dev_tx="iio")
+    rx = sc.get_signal_context(uri_rx, classname_rx=None, dev_rx="iio")
+
+    # TX
+    try:
+        if dev_tx == "iio":
+            # Set parameters
+            for p in param_set_tx.keys():
+                setattr(tx, p, param_set_tx[p])
+
+            # Set common buffer settings
+            tx.tx_cyclic_buffer = True
+
+            # Sinewave creation
+            if hasattr(tx, "sample_rate"):
+                RXFS = int(tx.sample_rate)
+
+            tx.dds_single_tone(frequency, scale, channel_tx)
+
+        elif dev_tx == "sig_gen":
+            # pyvisa thingy c/o template from scipy.py
+            # set freq, scale, phase, offset, etc
+            # Sinewave creation
+            pass
+    except Exception as e:
+        print(e)
+
+    # RX
+    try:
+        if dev_rx == "iio":
+            # Enable RX channels, setup buffer size
+            N = 2 ** 14
+            rx.rx_enabled_channels = [channel_rx]
+            rx.rx_buffer_size = N * 2 * len(rx.rx_enabled_channels)
+
+            if RXFS == 0 or RXFS == None:
+                if hasattr(rx, "sample_rate"):
+                    RXFS = int(rx.sample_rate)
+                else:
+                    RXFS = int(rx.rx_sample_rate)
+
+        elif dev_rx == "spectrum_analyzer":
+            # pyvisa thingy c/o template from scipy.py
+            # Enable channels (if possible)
+            # Setup range etc
+            # Get sample_rate if feasible
+            pass
+    except Exception as e:
+        print(e)
+
+    # Data Acquisition
+    try:
+        if dev_rx == "iio":
+            try:
+                for _ in range(10):  # Wait
+                    data = rx.rx()
+            except Exception as e:
+                del rx
+                raise Exception(e)
+            del rx
+
+        elif dev_rx == "spectrum_analyzer":
+            # Figure out how to get data from ext. instrument
+            pass
+    except Exception as e:
+        print(e)
+
+    # Data Manipulation
+    tone_peaks, tone_freqs = spec.spec_est(data, fs=RXFS, ref=2 ** 15, plot=False)
+    indx = np.argmax(tone_peaks)
+    diff = np.abs(tone_freqs[indx] - frequency)
+    s = "Peak: " + str(tone_peaks[indx]) + "@" + str(tone_freqs[indx])
+    print(s)
+
+    # Assertion
+    assert (frequency * 0.01) > diff
+    assert tone_peaks[indx] > peak_min
+
+
 def dds_two_tone(
     uri,
     classname,
@@ -903,7 +1000,7 @@ def harmonic_vals(classname, uri, channel, param_set, low, high, plot=False):
         plt.subplot(2, 1, 2)
         plt.plot(fftshift(freqs), fftshift(ampl))
         plt.plot(ffreqs[ml], ffampl[ml], "y.")
-        plt.plot(ffreqs[indxs[0 : len(hm)]], hm[0 : len(hm)], "y.")
+        plt.plot(ffreqs[indxs[0: len(hm)]], hm[0: len(hm)], "y.")
 
         plt.margins(0.1, 0.1)
         plt.annotate("Fundamental", (ffreqs[ml], ffampl[ml]))
