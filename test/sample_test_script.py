@@ -8,7 +8,6 @@ for i in range(5):
     freq = random.randint(1000,20000)
     ampl = random.random()*3
     offset = random.random()*2
-    offset = random.ran
     print(freq)
     func_on(siggen, func[i%2], freq, ampl, offset)
     
