@@ -7,8 +7,8 @@ func = ["sine", "square"]
 for i in range(5):
     freq = random.randint(1000,20000)
     ampl = random.random()*3
-    offset = random.random()*2
-    print(freq)
+    offset = random.random()*1
+    print("Frequency: " + str(freq) + "   Amplitude: " + str(ampl) + "   Offset: " + str(offset))
     func_on(siggen, func[i%2], freq, ampl, offset)
     
 func_off(siggen)
