@@ -46,6 +46,10 @@ def func_on(instr, func, freq, ampl, offset):
     instr.write("FUNCtion " + func)
     # set frequency
     instr.write("FREQuency " + str(freq))
+    # set amplitude
+    instr.write("VOLTage " + str(ampl))
+    # set offset
+    instr.write("VOLTage:OFFSet " + str(offset))
     # turn on instrument output
     instr.write("OUTPut ON")
     time.sleep(3)
