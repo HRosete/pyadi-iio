@@ -328,6 +328,116 @@ def dds_loopback(
     assert tone_peaks[indx] > peak_min
 
 
+def dds_adc_dac(
+    uri_tx,
+    uri_rx,
+    param_set_tx,
+    channel_tx,
+    channel_rx,
+    frequency,
+    scale,
+    peak_min,
+    classname_tx=None,
+    classname_rx=None,
+    dev_tx="iio",
+    dev_rx="iio",
+):
+    """
+    dds_adc_dac: <insert definition and parameters used>
+
+    parameters:
+        uri_tx: type=<insert type>
+            <insert definition>
+        uri_rx: type=<insert type>
+            <insert definition>
+        param_set_tx: type=<insert type>
+            <insert definition>
+        channel_tx: type=<insert type>
+            <insert definition>
+        channel_rx: type=<insert type>
+            <insert definition>
+        frequency: type=<insert type>
+            <insert definition>
+        scale: type=<insert type>
+            <insert definition>
+        peak_min: type=<insert type>
+            <insert definition>
+        classname_tx=None: type=<insert type>
+            <insert definition>
+        classname_rx=None: type=<insert type>
+            <insert definition>
+        dev_tx="iio": type=<insert type>
+            <insert definition>
+        dev_rx="iio": type=<insert type>
+            <insert definition>
+    """
+    from test import signal_context as sc
+    tx = sc.get_signal_context(uri_tx, classname_tx=None, dev_tx="iio")
+    rx = sc.get_signal_context(uri_rx, classname_rx=None, dev_rx="iio")
+
+    # Setting up the signal source, TX, and sending a signal
+    if dev_tx == "iio":
+        # Set parameters
+        for p in param_set_tx.keys():
+            setattr(tx, p, param_set_tx[p])
+
+        # Set common buffer settings
+        tx.tx_cyclic_buffer = True
+
+        # Sinewave creation
+        if hasattr(tx, "sample_rate"):
+            RXFS = int(tx.sample_rate)
+        tx.dds_single_tone(frequency, scale, channel_tx)
+    elif dev_tx == "sig_gen":
+        # pyvisa thingy c/o template from scipy.py
+        # set freq, scale, phase, offset, etc
+        # Sinewave creation
+        pass
+
+    # Setting up the signal sink, RX, and acquiring data
+    if dev_rx == "iio":
+        # Enable RX channels, setup buffer size
+        N = 2 ** 14
+        rx.rx_enabled_channels = [channel_rx]
+        rx.rx_buffer_size = N * 2 * len(rx.rx_enabled_channels)
+
+        if RXFS == 0 or RXFS == None:
+            if hasattr(rx, "sample_rate"):
+                RXFS = int(rx.sample_rate)
+            else:
+                RXFS = int(rx.rx_sample_rate)
+
+        # Data Acquisition
+        try:
+            for _ in range(10):  # Wait
+                data = rx.rx()
+        except Exception as e:
+            del rx
+            raise Exception(e)
+        del rx
+    elif dev_rx == "m2k":
+        # Figure out how to get data from m2k, libm2k perhaps
+        pass
+    elif dev_rx == "spectrum_analyzer":
+        # pyvisa thingy c/o template from scipy.py
+        # Enable channels (if possible)
+        # Setup range etc
+        # Get sample_rate if feasible
+        # Figure out how to get data from ext. instrument
+        pass
+
+    # Data Manipulation
+    tone_peaks, tone_freqs = spec.spec_est(data, fs=RXFS, ref=2 ** 15, plot=False)
+    indx = np.argmax(tone_peaks)
+    diff = np.abs(tone_freqs[indx] - frequency)
+    s = "Peak: " + str(tone_peaks[indx]) + "@" + str(tone_freqs[indx])
+    print(s)
+
+    # Assertion
+    assert (frequency * 0.01) > diff
+    assert tone_peaks[indx] > peak_min
+
+
 def dds_two_tone(
     uri,
     classname,
@@ -549,8 +659,8 @@ def cw_loopback(uri, classname, channel, param_set, use_tx2=False, use_rx2=False
             assert getattr(sdr, p) == param_set[p]
         else:
             assert (
-                np.argmax(np.abs(np.array(getattr(sdr, p)) - np.array(param_set[p])))
-                < 4
+                np.argmax(np.abs(np.array(getattr(sdr, p)) - np.array(param_set[p]))) <
+                4
             )
     # Set common buffer settings
     N = 2 ** 14
@@ -903,7 +1013,7 @@ def harmonic_vals(classname, uri, channel, param_set, low, high, plot=False):
         plt.subplot(2, 1, 2)
         plt.plot(fftshift(freqs), fftshift(ampl))
         plt.plot(ffreqs[ml], ffampl[ml], "y.")
-        plt.plot(ffreqs[indxs[0 : len(hm)]], hm[0 : len(hm)], "y.")
+        plt.plot(ffreqs[indxs[0: len(hm)]], hm[0: len(hm)], "y.")
 
         plt.margins(0.1, 0.1)
         plt.annotate("Fundamental", (ffreqs[ml], ffampl[ml]))
