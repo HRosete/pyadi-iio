@@ -31,9 +31,11 @@
 # STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF
 # THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+from adi.ad469x import ad469x
 from adi.ad717x import ad717x
 from adi.ad719x import ad719x
 from adi.ad936x import Pluto, ad9361, ad9363, ad9364
+from adi.ad4020 import ad4020
 from adi.ad4110 import ad4110
 from adi.ad4130 import ad4130
 from adi.ad4630 import ad4630
@@ -62,6 +64,7 @@ from adi.ad9467 import ad9467
 from adi.ad9625 import ad9625
 from adi.ad9680 import ad9680
 from adi.ada4961 import ada4961
+from adi.adaq8092 import adaq8092
 from adi.adar1000 import adar1000, adar1000_array
 from adi.adf4159 import adf4159
 from adi.adf4355 import adf4355
@@ -83,6 +86,7 @@ from adi.adrv9009 import adrv9009
 from adi.adrv9009_zu11eg import adrv9009_zu11eg
 from adi.adrv9009_zu11eg_fmcomms8 import adrv9009_zu11eg_fmcomms8
 from adi.adrv9009_zu11eg_multi import adrv9009_zu11eg_multi
+from adi.adt7420 import adt7420
 from adi.adxl313 import adxl313
 from adi.adxl345 import adxl345
 from adi.adxl355 import adxl355
@@ -96,9 +100,11 @@ from adi.fmcadc3 import fmcadc3
 from adi.fmcjesdadc1 import fmcjesdadc1
 from adi.fmclidar1 import fmclidar1
 from adi.fmcomms5 import FMComms5
+from adi.fmcomms11 import FMComms11
 from adi.gen_mux import genmux
 from adi.lm75 import lm75
 from adi.ltc2314_14 import ltc2314_14
+from adi.ltc2387 import ltc2387
 from adi.ltc2499 import ltc2499
 from adi.ltc2983 import ltc2983
 from adi.max11205 import max11205
@@ -112,5 +118,5 @@ try:
 except ImportError:
     pass
 
-__version__ = "0.0.14"
+__version__ = "0.0.15"
 name = "Analog Devices Hardware Interfaces"

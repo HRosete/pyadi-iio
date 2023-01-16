@@ -40,9 +40,9 @@ from adi.sync_start import sync_start
 class ad9162(tx, context_manager, sync_start):
     """ AD9162 16-Bit, 12 GSPS, RF DAC """
 
-    _complex_data = True
+    _complex_data = False
+    # _complex_data = True
     _tx_channel_names = ["voltage0_i", "voltage0_q"]
-    # _tx_channel_names = ["voltage0", "voltage1"]
     _device_name = ""
 
     def __init__(self, uri="", username="root", password="analog"):
@@ -57,23 +57,19 @@ class ad9162(tx, context_manager, sync_start):
     @property
     def fir85_enable(self):
         return self._get_iio_attr("voltage0_i", "fir85_enable", True, self._txdac)
-        # return self._get_iio_attr("voltage0", "fir85_enable", True, self._txdac)
 
     @fir85_enable.setter
     def fir85_enable(self, value):
         self._set_iio_attr("voltage0_i", "fir85_enable", True, value, self._txdac)
-        # self._set_iio_attr("voltage0", "fir85_enable", True, value, self._txdac)
 
     @property
-    def sampling_rate(self):
-        """sampling_rate: Sample frequency rate TX path in samples per second."""
+    def sample_rate(self):
+        """sample_rate: Sample frequency rate TX path in samples per second."""
         return self._get_iio_attr("voltage0_i", "sampling_frequency", True, self._txdac)
-        # return self._get_iio_attr("voltage0", "sampling_frequency", True, self._txdac)
 
     @property
     def scale(self):
         return self._get_iio_attr("voltage0_i", "scale", True, self._txdac)
-        # return self._get_iio_attr("voltage0", "scale", True, self._txdac)
 
     @property
     def frequency_nco(self):
