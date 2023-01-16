@@ -3,20 +3,25 @@
 ![PyADI-IIO Logo](images/PyADI-IIO_Logo_72.png)
 
 [![Build Status](https://travis-ci.org/analogdevicesinc/pyadi-iio.svg?branch=master)](https://travis-ci.org/analogdevicesinc/pyadi-iio)
-[![PyPI version](https://badge.fury.io/py/pyadi-iio.svg)](https://badge.fury.io/py/pyadi-iio) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/4bd027bfc5774029a30a9e1cedf5a434)](https://www.codacy.com/app/travis.collins/pyadi-iio?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=analogdevicesinc/pyadi-iio&amp;utm_campaign=Badge_Grade) [![](https://img.shields.io/badge/python-3.6+-blue.svg)](https://www.python.org/download/releases/3.6.0/)
+[![PyPI version](https://badge.fury.io/py/pyadi-iio.svg)](https://badge.fury.io/py/pyadi-iio) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/4bd027bfc5774029a30a9e1cedf5a434)](https://www.codacy.com/app/travis.collins/pyadi-iio?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=analogdevicesinc/pyadi-iio&amp;utm_campaign=Badge_Grade) [![](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/download/releases/3.7.0/)
 
 [[Docs](http://analogdevicesinc.github.io/pyadi-iio/)]
 [[Support](http://ez.analog.com)]
 [[Wiki](https://wiki.analog.com/resources/tools-software/linux-software/pyadi-iio)]
 
 ### Currently supported hardware
+- AD4020
 - AD4130
 - AD4110
 - AD4111
 - AD4112
 - AD4114
 - AD4115
+- AD4116
 - AD4630
+- AD4696
+- AD4697
+- AD4698
 - AD5310R
 - AD5311R
 - AD5627
@@ -69,6 +74,7 @@
 - AD9136
 - AD9144
 - AD9152
+- AD9162
 - AD9166
 - AD9172
 - AD9250
@@ -82,14 +88,17 @@
 - AD9680
 - AD9739A
 - ADA4961
+- ADAQ8092
 - ADAR1000
 - ADF4159
+- ADF4355
 - ADF4371
 - ADF5610
 - ADG2128
 - ADIS16460
 - ADIS16495
 - ADIS16507
+- ADL5240
 - ADL5960
 - ADMV8818
 - ADPD410x
@@ -98,6 +107,7 @@
 - ADRV9008-1/2
 - ADRV9009
 - ADRV9009-ZU11EG
+- ADT7420
 - ADXL312
 - ADXL313
 - ADXL314
@@ -115,7 +125,10 @@
 - FMCJESDADC1
 - FMCLIDAR1
 - FMComms8
+- FMComms11
 - LTC2314-14
+- LTC2387-18
+- LTC2499
 - LTC2983
 - AD7606
 - AD7745
