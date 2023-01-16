@@ -6,8 +6,7 @@ global m2k_config
 
 scopy_path = "C:\Program Files\Scopy\Scopy.exe"
 m2k_config = "instr_config.js"
-# m2k_config = "siggen_spec.js"
-
+funcs = ["sine", "square", "triangle"]
 def func_on(instr, func, freq, ampl, offset):
     if instr == "m2k":
         
@@ -15,6 +14,7 @@ def func_on(instr, func, freq, ampl, offset):
         instr_config = open("instr_config.js","a")
         instr_config.writelines(["function set_signal_generator(){ \n", "siggen.enabled[0] = true \n", "siggen.enabled[1] = false \n"])
         instr_config.writelines(["siggen.mode[0] = 1 \n", "siggen.waveform_type[0] = 0 \n"])
+        instr_config.writelines(["siggen.waveform_type[0] = "+ str(funcs.index(func)) +" \n"])
         instr_config.write("siggen.waveform_frequency[0] = " + str(freq) + " \n")
         instr_config.write("siggen.waveform_amplitude[0] = " + str(ampl) + " \n")
         instr_config.write("siggen.waveform_offset[0] = " + str(offset) + " \n")
